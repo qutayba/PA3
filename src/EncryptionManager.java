@@ -63,6 +63,9 @@ public class EncryptionManager {
         }
 
         BigInteger m = new BigInteger(message);
+        if(m.compareTo(n) > 0) {
+            throw new Exception("The value to be encrypted is greater than the n value. Please, change the values and try again.");
+        }
 
         BigInteger c = m.modPow(e, n);
         return c.toString();
