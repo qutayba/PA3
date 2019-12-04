@@ -104,15 +104,28 @@ public class EncryptionManager {
             throw new Exception("No n or e value found. You need to execute step 1 and 2.");
         }
 
-        // Convening the string into big integer
-        BigInteger m = new BigInteger(message);
-        if(m.compareTo(n) > 0) {
-            throw new Exception("The value to be encrypted is greater than the n value. Please, change the values and try again.");
+        // Spiting the message into a char array, because we want
+        // to encrypt every letter alone
+        char[] mArray = message.toCharArray();
+
+        // Defining a string array to hold the encrypted letters (or characters)
+        String[] cArray = new String[mArray.length];
+
+        // Loop throw all letters and encrypt them
+        // The encrypted chars will be stored in the cArray
+        for (int i = 0; i < mArray.length; i++) {
+            BigInteger m = BigInteger.valueOf((int)mArray[i]);
+            if(m.compareTo(n) > 0) {
+                throw new Exception("The value to be encrypted is greater than the n value. Please, change the values and try again.");
+            }
+
+            // Encrypting the message based on the calculated e and n values
+            BigInteger c = m.modPow(e, n);
+            cArray[i] = c.toString();
         }
 
-        // Encrypting the message based on the calculated e and n values
-        BigInteger c = m.modPow(e, n);
-        return c.toString();
+        // Joining all encrypted chars into on comma separated string
+        return String.join(",", cArray);
     }
 
     /**
@@ -130,9 +143,20 @@ public class EncryptionManager {
             throw new Exception("No n or d value found. You need to execute step 1.");
         }
 
-        // Decrypting the message based on the calculated d and n values
-        BigInteger dm = new BigInteger(message).modPow(d, n);
-        return dm.toString();
+        // Spiting the encrypted message into array based on the comma as separator
+        String[] cArray = message.split(",");
+
+        // Just a char array to hold the decrypted chars
+        char[] mArray = new char[cArray.length];
+
+        // Loop throw all founded chars and decrypt them
+        for (int i = 0; i < cArray.length; i++) {
+            BigInteger m = new BigInteger(cArray[i]).modPow(d, n);
+            mArray[i] = (char)m.intValue();
+        }
+
+        // Return all decrypted chars as one string
+        return new String(mArray);
     }
 
 

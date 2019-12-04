@@ -22,7 +22,7 @@ public class App {
     private JLabel enc_step2ErrorLabel;
     private JTextField enc_step3Textfield;
     private JButton enc_encryptStep3Button;
-    private JTextPane enc_step3ResultsLabel;
+    private JTextArea enc_step3ResultsLabel;
     private JLabel enc_step3ErrorLabel;
 
 
